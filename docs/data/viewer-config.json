@@ -1,0 +1,21 @@
+﻿{
+  "version": 1,
+  "modelPath": "./assets/machine.glb",
+  "backgroundColor": "#0f1419",
+  "camera": {
+    "fov": 45,
+    "minDistance": 0.8,
+    "maxDistance": 12,
+    "target": [0, 0.6, 0]
+  },
+  "lights": {
+    "ambientIntensity": 0.55,
+    "directionalIntensity": 1.1,
+    "directionalPosition": [4, 8, 6]
+  },
+  "highlight": {
+    "emissiveColor": "#3d9be9",
+    "emissiveIntensity": 0.35
+  },
+  "fallbackDemo": true
+}

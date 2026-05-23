@@ -1,0 +1,48 @@
+﻿{
+  "version": 1,
+  "model": "Rain Machine",
+  "parts": [
+    {
+      "partId": "RM-P-001",
+      "nodeName": "BasePlate",
+      "displayName": "Chassi base",
+      "description": "Placa estrutural inferior que sustenta os módulos da máquina.",
+      "quantity": 1,
+      "category": "estrutura"
+    },
+    {
+      "partId": "RM-P-004",
+      "nodeName": "ControlPanel",
+      "displayName": "Painel de controle",
+      "description": "Interface de operação e indicadores do sistema.",
+      "quantity": 1,
+      "category": "elétrica"
+    },
+    {
+      "partId": "RM-P-002",
+      "nodeName": "PumpBody",
+      "displayName": "Corpo da bomba",
+      "description": "Conjunto de bombeamento responsável pela pressão do fluido.",
+      "quantity": 1,
+      "category": "fluidos"
+    },
+    {
+      "partId": "RM-P-003",
+      "nodeName": "Nozzle_A",
+      "displayName": "Bico de saída A",
+      "description": "Bico direcionável para distribuição do fluxo.",
+      "quantity": 2,
+      "category": "fluidos"
+    }
+  ],
+  "animations": [
+    {
+      "clipName": "OpenValve",
+      "label": "Abrir válvula"
+    },
+    {
+      "clipName": "CycleRain",
+      "label": "Ciclo chuva"
+    }
+  ]
+}

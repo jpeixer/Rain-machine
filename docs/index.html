@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="description" content="Rain Machine — visualizador 3D interativo">
+  <title>Rain Machine</title>
+  <link rel="stylesheet" href="./css/viewer.css">
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div id="app">
+    <header class="top-bar">
+      <h1>Rain Machine</h1>
+      <p class="hint">Toque na peça · Gire com um dedo · Pinça para zoom</p>
+    </header>
+
+    <div id="canvas-wrap">
+      <canvas id="viewer-canvas"></canvas>
+      <div id="loading" class="loading" aria-live="polite">
+        <div class="spinner"></div>
+        <p>Carregando máquina…</p>
+      </div>
+      <div id="error-banner" class="error-banner hidden" role="alert"></div>
+    </div>
+
+    <aside id="bom-sheet" class="bom-sheet" aria-hidden="true">
+      <div class="bom-sheet__handle" aria-hidden="true"></div>
+      <button type="button" id="bom-close" class="bom-close" aria-label="Fechar">×</button>
+      <div class="bom-sheet__content">
+        <span id="bom-category" class="bom-category"></span>
+        <h2 id="bom-title"></h2>
+        <p id="bom-id" class="bom-id"></p>
+        <p id="bom-description"></p>
+        <dl class="bom-meta">
+          <dt>Quantidade</dt>
+          <dd id="bom-quantity">—</dd>
+        </dl>
+      </div>
+    </aside>
+    <div id="bom-backdrop" class="bom-backdrop hidden"></div>
+
+    <footer class="anim-bar">
+      <button type="button" id="anim-reset" class="anim-btn anim-btn--secondary" title="Pose inicial">Reset</button>
+      <div id="anim-buttons" class="anim-buttons"></div>
+      <button type="button" id="anim-pause" class="anim-btn anim-btn--secondary hidden" title="Pausar">Pause</button>
+    </footer>
+  </div>
+
+  <script type="module" src="./js/viewer.js"></script>
+</body>
+</html>
