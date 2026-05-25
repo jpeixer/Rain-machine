@@ -51,6 +51,14 @@
       "category": "elétrica"
     },
     {
+      "partId": "RM-P-014",
+      "nodeName": "controle",
+      "displayName": "Controle de válvulas",
+      "description": "Controle para regulagem da intensidade do jato de água nas válvulas.",
+      "quantity": 1,
+      "category": "controle"
+    },
+    {
       "partId": "RM-P-007",
       "nodeName": "valvulas",
       "displayName": "Válvulas",

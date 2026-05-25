@@ -59,7 +59,7 @@ export class BomPanel {
       this.actions.appendChild(btn);
     }
 
-    if (nodeName === 'valvulas') {
+    if (nodeName === 'valvulas' || nodeName === 'controle') {
       const wrap = document.createElement('div');
       wrap.className = 'bom-action-intensity';
 

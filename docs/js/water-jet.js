@@ -1,8 +1,7 @@
 import * as THREE from 'three';
 
-const PARTICLE_COUNT = 120;
-const JET_LENGTH = 0.6;
-const SPREAD = 0.08;
+const PARTICLES_PER_JET = 180;
+const GRAVITY = -4.8;
 
 export class WaterJetSystem {
   constructor(scene) {
@@ -10,76 +9,79 @@ export class WaterJetSystem {
     this.active = false;
     this.intensity = 0.5;
     this.jets = [];
-    this._clock = new THREE.Clock();
+    this._clock = new THREE.Clock(false);
   }
 
   attachToNozzles(modelRoot) {
     if (!modelRoot) return;
-    const nozzleParent = modelRoot.getObjectByName('nozzle');
-    if (!nozzleParent) return;
+    const nozzleGroup = modelRoot.getObjectByName('nozzle');
+    if (!nozzleGroup) return;
 
-    nozzleParent.traverse((child) => {
-      if (child.isMesh) {
+    for (const child of nozzleGroup.children) {
+      if (child.children.length > 0 || child.isMesh) {
         this._createJet(child);
       }
-    });
+    }
   }
 
-  _createJet(nozzleMesh) {
-    const geo = new THREE.BufferGeometry();
-    const positions = new Float32Array(PARTICLE_COUNT * 3);
-    const velocities = new Float32Array(PARTICLE_COUNT * 3);
-    const lifetimes = new Float32Array(PARTICLE_COUNT);
+  _createJet(nozzleObj) {
+    const origin = new THREE.Vector3();
+    nozzleObj.getWorldPosition(origin);
 
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-      this._resetParticle(positions, velocities, lifetimes, i);
+    const direction = new THREE.Vector3(0, 0, 1);
+    nozzleObj.getWorldDirection(direction);
+    direction.normalize();
+
+    const geo = new THREE.BufferGeometry();
+    const positions = new Float32Array(PARTICLES_PER_JET * 3);
+    const ages = new Float32Array(PARTICLES_PER_JET);
+
+    for (let i = 0; i < PARTICLES_PER_JET; i++) {
+      ages[i] = -1;
     }
 
     geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
     const mat = new THREE.PointsMaterial({
-      color: 0x5cb8ff,
-      size: 0.012,
+      color: 0x7ec8f0,
+      size: 0.018,
       transparent: true,
-      opacity: 0.7,
+      opacity: 0.75,
       depthWrite: false,
-      blending: THREE.AdditiveBlending,
+      blending: THREE.NormalBlending,
+      sizeAttenuation: true,
     });
 
     const points = new THREE.Points(geo, mat);
+    points.frustumCulled = false;
     points.visible = false;
-
-    const worldPos = new THREE.Vector3();
-    nozzleMesh.getWorldPosition(worldPos);
-    points.position.copy(worldPos);
-
-    const worldDir = new THREE.Vector3(0, -1, 0);
-    nozzleMesh.getWorldDirection(worldDir);
-
     this.scene.add(points);
-    this.jets.push({ points, geo, mat, velocities, lifetimes, direction: worldDir.clone(), origin: worldPos.clone() });
-  }
 
-  _resetParticle(positions, velocities, lifetimes, i) {
-    const i3 = i * 3;
-    positions[i3] = (Math.random() - 0.5) * SPREAD;
-    positions[i3 + 1] = 0;
-    positions[i3 + 2] = (Math.random() - 0.5) * SPREAD;
-    velocities[i3] = (Math.random() - 0.5) * 0.3;
-    velocities[i3 + 1] = -(Math.random() * 2 + 1);
-    velocities[i3 + 2] = (Math.random() - 0.5) * 0.3;
-    lifetimes[i] = Math.random();
+    this.jets.push({
+      points,
+      geo,
+      mat,
+      ages,
+      origin: origin.clone(),
+      direction: direction.clone(),
+      spawnAccum: 0,
+    });
   }
 
   turnOn() {
     this.active = true;
+    this._clock.start();
     for (const jet of this.jets) {
       jet.points.visible = true;
+      for (let i = 0; i < PARTICLES_PER_JET; i++) {
+        jet.ages[i] = -1;
+      }
     }
   }
 
   turnOff() {
     this.active = false;
+    this._clock.stop();
     for (const jet of this.jets) {
       jet.points.visible = false;
     }
@@ -88,35 +90,62 @@ export class WaterJetSystem {
   setIntensity(value) {
     this.intensity = Math.max(0.1, Math.min(1.0, value));
     for (const jet of this.jets) {
-      jet.mat.opacity = 0.4 + this.intensity * 0.5;
-      jet.mat.size = 0.008 + this.intensity * 0.012;
+      jet.mat.opacity = 0.5 + this.intensity * 0.4;
+      jet.mat.size = 0.012 + this.intensity * 0.014;
     }
   }
 
   update() {
     if (!this.active) return;
     const dt = this._clock.getDelta();
-    const speed = this.intensity * 2.5;
+    if (dt <= 0 || dt > 0.1) return;
+
+    const speed = 2.0 + this.intensity * 4.0;
+    const maxLife = 1.2;
+    const spawnRate = 80 + this.intensity * 120;
+    const spread = 0.015;
 
     for (const jet of this.jets) {
       const posAttr = jet.geo.getAttribute('position');
       const pos = posAttr.array;
-      const vel = jet.velocities;
-      const life = jet.lifetimes;
+      const ages = jet.ages;
 
-      for (let i = 0; i < PARTICLE_COUNT; i++) {
-        const i3 = i * 3;
-        life[i] += dt * speed;
+      jet.spawnAccum += dt * spawnRate;
+      let toSpawn = Math.floor(jet.spawnAccum);
+      jet.spawnAccum -= toSpawn;
 
-        if (life[i] > 1.0) {
-          this._resetParticle(pos, vel, life, i);
-        } else {
-          pos[i3] += vel[i3] * dt * speed * SPREAD * 3;
-          pos[i3 + 1] += vel[i3 + 1] * dt * speed * JET_LENGTH;
-          pos[i3 + 2] += vel[i3 + 2] * dt * speed * SPREAD * 3;
-          pos[i3 + 1] -= dt * 0.5;
+      for (let i = 0; i < PARTICLES_PER_JET; i++) {
+        if (ages[i] < 0 && toSpawn > 0) {
+          toSpawn--;
+          ages[i] = 0;
+          const i3 = i * 3;
+          pos[i3] = jet.origin.x + (Math.random() - 0.5) * spread;
+          pos[i3 + 1] = jet.origin.y + (Math.random() - 0.5) * spread;
+          pos[i3 + 2] = jet.origin.z + (Math.random() - 0.5) * spread;
+          continue;
         }
+
+        if (ages[i] < 0) continue;
+
+        ages[i] += dt;
+        if (ages[i] > maxLife) {
+          ages[i] = -1;
+          const i3 = i * 3;
+          pos[i3] = jet.origin.x;
+          pos[i3 + 1] = jet.origin.y;
+          pos[i3 + 2] = jet.origin.z;
+          continue;
+        }
+
+        const t = ages[i];
+        const i3 = i * 3;
+        const jitter = (Math.random() - 0.5) * 0.002;
+
+        pos[i3] = jet.origin.x + jet.direction.x * speed * t + jitter;
+        pos[i3 + 1] = jet.origin.y + jet.direction.y * speed * t + 0.5 * GRAVITY * t * t;
+        pos[i3 + 2] = jet.origin.z + jet.direction.z * speed * t + jitter;
       }
+
       posAttr.needsUpdate = true;
     }
   }

@@ -2058,6 +2058,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: porta
       objectReference: {fileID: 0}
+    - target: {fileID: -1454307053845600407, guid: 640d565f7f279bd459268e6afb176319, type: 3}
+      propertyPath: m_Name
+      value: controle
+      objectReference: {fileID: 0}
     - target: {fileID: -555128515375753443, guid: 640d565f7f279bd459268e6afb176319, type: 3}
       propertyPath: m_Materials.Array.size
       value: 1
@@ -2093,6 +2097,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 640d565f7f279bd459268e6afb176319, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1759406509}
+    - targetCorrespondingSourceObject: {fileID: -1454307053845600407, guid: 640d565f7f279bd459268e6afb176319, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1759406511}
   m_SourcePrefab: {fileID: 100100000, guid: 640d565f7f279bd459268e6afb176319, type: 3}
 --- !u!4 &1759406507 stripped
 Transform:
@@ -2121,6 +2128,29 @@ MonoBehaviour:
   description: "Painel de controle el\xE9trico do sistema."
   quantity: 1
   category: "el\xE9trica"
+  animationLabel: 
+--- !u!1 &1759406510 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -1454307053845600407, guid: 640d565f7f279bd459268e6afb176319, type: 3}
+  m_PrefabInstance: {fileID: 1759406506}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1759406511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1759406510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e04d84be44f55bd41b2a75b37ac7f0ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  partId: RM-P-014
+  displayName: "Controle de v\xE1lvulas"
+  description: "Controle para regulagem da intensidade do jato de \xE1gua nas v\xE1lvulas."
+  quantity: 1
+  category: controle
   animationLabel: 
 --- !u!1001 &1848121948
 PrefabInstance:
