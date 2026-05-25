@@ -11,6 +11,8 @@ No celular ou desktop você pode:
 - Girar e dar zoom no modelo 3D (toque + pinça)
 - Tocar em peças para abrir a ficha estilo BOM (lista de materiais)
 - Reproduzir animações exportadas da Unity
+- **Ligar/Desligar** o sistema ao clicar no botão "Liga/Desliga" — ativa o jato de água nos bicos (nozzle) com animação de partículas
+- **Regular intensidade** ao clicar nas Válvulas — botões + e − controlam a potência do jato (10% a 100%)
 
 ### Publicar / atualizar o site
 
