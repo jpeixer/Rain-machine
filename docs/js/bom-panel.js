@@ -14,6 +14,8 @@ export class BomPanel {
     this._onAction = null;
     this._powerOn = false;
     this._intensity = 0.5;
+    this._doorOpen = false;
+    this._onCloseCallback = null;
     this.closeBtn.addEventListener('click', this._onClose);
     this.backdrop.addEventListener('click', this._onClose);
     this._touchStartY = 0;
@@ -28,6 +30,10 @@ export class BomPanel {
 
   onAction(callback) {
     this._onAction = callback;
+  }
+
+  onClose(callback) {
+    this._onCloseCallback = callback;
   }
 
   open(part) {
@@ -75,6 +81,22 @@ export class BomPanel {
       this.actions.appendChild(btn);
     }
 
+    if (nodeName === 'painel') {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'bom-action-btn bom-action-btn--toggle';
+      btn.dataset.action = 'toggle-door';
+      btn.textContent = this._doorOpen ? 'Fechar porta' : 'Abrir porta';
+      if (this._doorOpen) btn.classList.add('active');
+      btn.addEventListener('click', () => {
+        this._doorOpen = !this._doorOpen;
+        btn.classList.toggle('active', this._doorOpen);
+        btn.textContent = this._doorOpen ? 'Fechar porta' : 'Abrir porta';
+        if (this._onAction) this._onAction('toggle-door', { open: this._doorOpen });
+      });
+      this.actions.appendChild(btn);
+    }
+
     if (nodeName === 'valvulas' || nodeName === 'controle') {
       const wrap = document.createElement('div');
       wrap.className = 'bom-action-intensity';
@@ -118,5 +140,6 @@ export class BomPanel {
     this.sheet.classList.remove('open');
     this.sheet.setAttribute('aria-hidden', 'true');
     this.backdrop.classList.add('hidden');
+    if (this._onCloseCallback) this._onCloseCallback();
   }
 }
