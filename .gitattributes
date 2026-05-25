@@ -169,3 +169,7 @@ Packages/packages-lock.json linguist-generated
 
 # Exceptions for .asset files such as lightning pre-baking
 LightingData.asset     binary
+
+# GitHub Pages assets must NOT use LFS (Pages cannot serve LFS)
+docs/assets/environment.exr filter= diff= merge= binary
+docs/assets/*.glb filter= diff= merge= binary
