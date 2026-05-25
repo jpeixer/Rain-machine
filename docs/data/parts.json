@@ -3,36 +3,28 @@
   "model": "Rain Machine",
   "parts": [
     {
-      "partId": "RM-P-001",
-      "nodeName": "BasePlate",
-      "displayName": "Chassi base",
-      "description": "Placa estrutural inferior que sustenta os módulos da máquina.",
+      "partId": "RM-P-009",
+      "nodeName": "porta (1)",
+      "displayName": "Porta do painel",
+      "description": "Porta de acesso ao painel elétrico.",
       "quantity": 1,
       "category": "estrutura"
     },
     {
-      "partId": "RM-P-004",
-      "nodeName": "ControlPanel",
-      "displayName": "Painel de controle",
-      "description": "Interface de operação e indicadores do sistema.",
+      "partId": "RM-P-010",
+      "nodeName": "Water Pump",
+      "displayName": "Bomba d'água",
+      "description": "Bomba centrífuga para pressurização do sistema.",
+      "quantity": 1,
+      "category": "fluidos"
+    },
+    {
+      "partId": "RM-P-011",
+      "nodeName": "ligadesliga",
+      "displayName": "Botão Liga/Desliga",
+      "description": "Botão de acionamento principal do sistema.",
       "quantity": 1,
       "category": "elétrica"
-    },
-    {
-      "partId": "RM-P-002",
-      "nodeName": "PumpBody",
-      "displayName": "Corpo da bomba",
-      "description": "Conjunto de bombeamento responsável pela pressão do fluido.",
-      "quantity": 1,
-      "category": "fluidos"
-    },
-    {
-      "partId": "RM-P-003",
-      "nodeName": "Nozzle_A",
-      "displayName": "Bico de saída A",
-      "description": "Bico direcionável para distribuição do fluxo.",
-      "quantity": 2,
-      "category": "fluidos"
     },
     {
       "partId": "RM-P-006",
@@ -40,6 +32,30 @@
       "displayName": "Tanque IBC",
       "description": "Tanque IBC com plástico translúcido que permite visualizar o nível de água pela sombra.",
       "quantity": 1,
+      "category": "fluidos"
+    },
+    {
+      "partId": "RM-P-012",
+      "nodeName": "disjuntor",
+      "displayName": "Disjuntor",
+      "description": "Disjuntor de proteção elétrica do circuito.",
+      "quantity": 1,
+      "category": "elétrica"
+    },
+    {
+      "partId": "RM-P-008",
+      "nodeName": "painel",
+      "displayName": "Painel elétrico",
+      "description": "Painel de controle elétrico do sistema.",
+      "quantity": 1,
+      "category": "elétrica"
+    },
+    {
+      "partId": "RM-P-007",
+      "nodeName": "valvulas",
+      "displayName": "Válvulas",
+      "description": "Conjunto de válvulas para controle de fluxo de água.",
+      "quantity": 4,
       "category": "fluidos"
     }
   ],
