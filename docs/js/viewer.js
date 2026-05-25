@@ -308,18 +308,27 @@ function animate() {
   renderer.render(scene, camera);
 }
 
-function createGradientTexture() {
+function createNoiseBackground() {
+  const size = 512;
   const canvas2d = document.createElement('canvas');
-  canvas2d.width = 2;
-  canvas2d.height = 512;
+  canvas2d.width = size;
+  canvas2d.height = size;
   const ctx = canvas2d.getContext('2d');
-  const gradient = ctx.createLinearGradient(0, 0, 0, 512);
-  gradient.addColorStop(0, '#050509');
-  gradient.addColorStop(0.4, '#04070c');
-  gradient.addColorStop(0.7, '#030a13');
-  gradient.addColorStop(1, '#050509');
-  ctx.fillStyle = gradient;
-  ctx.fillRect(0, 0, 2, 512);
+
+  ctx.fillStyle = '#0a0a0f';
+  ctx.fillRect(0, 0, size, size);
+
+  const imageData = ctx.getImageData(0, 0, size, size);
+  const data = imageData.data;
+  for (let i = 0; i < data.length; i += 4) {
+    const noise = (Math.random() - 0.5) * 18;
+    data[i] = Math.max(0, Math.min(255, data[i] + noise));
+    data[i + 1] = Math.max(0, Math.min(255, data[i + 1] + noise));
+    data[i + 2] = Math.max(0, Math.min(255, data[i + 2] + noise + 3));
+    data[i + 3] = 255;
+  }
+  ctx.putImageData(imageData, 0, 0);
+
   const tex = new THREE.CanvasTexture(canvas2d);
   tex.mapping = THREE.EquirectangularReflectionMapping;
   return tex;
@@ -329,7 +338,7 @@ function setupRoomEnvironment() {
   const roomEnv = new RoomEnvironment(renderer);
   const envMap = pmremGenerator.fromScene(roomEnv).texture;
   scene.environment = envMap;
-  scene.background = createGradientTexture();
+  scene.background = createNoiseBackground();
   roomEnv.dispose();
   pmremGenerator.dispose();
 }
