@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { EXRLoader } from 'three/addons/loaders/EXRLoader.js';
 import { BomPanel } from './bom-panel.js';
 import { AnimationController } from './animations.js';
 import { WaterJetSystem } from './water-jet.js';
@@ -47,9 +48,12 @@ const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true 
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1;
+renderer.toneMappingExposure = 0.8;
 
 const scene = new THREE.Scene();
+const pmremGenerator = new THREE.PMREMGenerator(renderer);
+pmremGenerator.compileEquirectangularShader();
+
 const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
 camera.position.set(2.5, 2, 3.5);
 
@@ -129,7 +133,7 @@ function indexParts(partsData) {
 
 function applyConfig(config) {
   viewerConfig = config;
-  scene.background = new THREE.Color(config.backgroundColor || '#0f1419');
+  scene.background = new THREE.Color(config.backgroundColor || '#1a1a2e');
   if (config.camera) {
     camera.fov = config.camera.fov ?? 45;
     controls.minDistance = config.camera.minDistance ?? 0.8;
@@ -304,6 +308,20 @@ function animate() {
   renderer.render(scene, camera);
 }
 
+function loadEnvironment(url) {
+  return new Promise((resolve, reject) => {
+    new EXRLoader().load(url, (texture) => {
+      texture.mapping = THREE.EquirectangularReflectionMapping;
+      const envMap = pmremGenerator.fromEquirectangular(texture).texture;
+      scene.environment = envMap;
+      scene.background = envMap;
+      texture.dispose();
+      pmremGenerator.dispose();
+      resolve(envMap);
+    }, undefined, reject);
+  });
+}
+
 async function init() {
   resize();
   window.addEventListener('resize', resize);
@@ -315,6 +333,10 @@ async function init() {
     ]);
     indexParts(partsData);
     applyConfig(config);
+
+    loadEnvironment('./assets/environment.exr').catch((err) => {
+      console.warn('HDRI not loaded, using solid background:', err);
+    });
 
     const modelPath = config.modelPath || './assets/machine.glb';
     try {
