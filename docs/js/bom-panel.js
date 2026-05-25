@@ -12,6 +12,8 @@ export class BomPanel {
     this._onClose = () => this.close();
     this._currentPart = null;
     this._onAction = null;
+    this._powerOn = false;
+    this._intensity = 0.5;
     this.closeBtn.addEventListener('click', this._onClose);
     this.backdrop.addEventListener('click', this._onClose);
     this._touchStartY = 0;
@@ -41,6 +43,14 @@ export class BomPanel {
     this.backdrop.classList.remove('hidden');
   }
 
+  setPowerState(isOn) {
+    this._powerOn = isOn;
+  }
+
+  setIntensityState(value) {
+    this._intensity = value;
+  }
+
   _buildActions(part) {
     this.actions.innerHTML = '';
     const nodeName = part.nodeName || '';
@@ -50,11 +60,17 @@ export class BomPanel {
       btn.type = 'button';
       btn.className = 'bom-action-btn bom-action-btn--toggle';
       btn.dataset.action = 'toggle-power';
-      btn.textContent = 'Ligar';
+      if (this._powerOn) {
+        btn.classList.add('active');
+        btn.textContent = 'Desligar';
+      } else {
+        btn.textContent = 'Ligar';
+      }
       btn.addEventListener('click', () => {
-        const isOn = btn.classList.toggle('active');
-        btn.textContent = isOn ? 'Desligar' : 'Ligar';
-        if (this._onAction) this._onAction('toggle-power', { on: isOn });
+        this._powerOn = !this._powerOn;
+        btn.classList.toggle('active', this._powerOn);
+        btn.textContent = this._powerOn ? 'Desligar' : 'Ligar';
+        if (this._onAction) this._onAction('toggle-power', { on: this._powerOn });
       });
       this.actions.appendChild(btn);
     }
@@ -65,7 +81,7 @@ export class BomPanel {
 
       const label = document.createElement('span');
       label.className = 'bom-action-label';
-      label.textContent = 'Intensidade: 50%';
+      label.textContent = `Intensidade: ${Math.round(this._intensity * 100)}%`;
 
       const minus = document.createElement('button');
       minus.type = 'button';

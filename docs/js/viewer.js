@@ -56,13 +56,15 @@ controls.dampingFactor = 0.08;
 controls.minDistance = 0.8;
 controls.maxDistance = 12;
 controls.target.set(0, 0.6, 0);
-controls.enablePan = false;
+controls.enablePan = true;
+controls.touches = { ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_PAN };
 
 const waterJets = new WaterJetSystem(scene);
 
 bomPanel.onAction((action, data) => {
   if (action === 'toggle-power') {
     systemOn = data.on;
+    bomPanel.setPowerState(systemOn);
     if (systemOn) {
       waterJets.turnOn();
       waterJets.setIntensity(jetIntensity);
@@ -73,11 +75,13 @@ bomPanel.onAction((action, data) => {
   if (action === 'intensity-up') {
     jetIntensity = Math.min(1.0, jetIntensity + 0.1);
     waterJets.setIntensity(jetIntensity);
+    bomPanel.setIntensityState(jetIntensity);
     data.label.textContent = `Intensidade: ${Math.round(jetIntensity * 100)}%`;
   }
   if (action === 'intensity-down') {
     jetIntensity = Math.max(0.1, jetIntensity - 0.1);
     waterJets.setIntensity(jetIntensity);
+    bomPanel.setIntensityState(jetIntensity);
     data.label.textContent = `Intensidade: ${Math.round(jetIntensity * 100)}%`;
   }
 });

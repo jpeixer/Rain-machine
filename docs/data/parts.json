@@ -11,6 +11,14 @@
       "category": "estrutura"
     },
     {
+      "partId": "RM-P-015",
+      "nodeName": "tslot",
+      "displayName": "Perfil T-Slot",
+      "description": "Estrutura em perfil de alumínio T-Slot para suporte dos bicos e componentes.",
+      "quantity": 1,
+      "category": "estrutura"
+    },
+    {
       "partId": "RM-P-010",
       "nodeName": "Water Pump",
       "displayName": "Bomba d'água",

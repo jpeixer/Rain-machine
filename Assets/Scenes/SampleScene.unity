@@ -1140,13 +1140,40 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f87b7c951048eeb49bd3fd584876ac17, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1106406675}
   m_SourcePrefab: {fileID: 100100000, guid: f87b7c951048eeb49bd3fd584876ac17, type: 3}
 --- !u!4 &1106406673 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f87b7c951048eeb49bd3fd584876ac17, type: 3}
   m_PrefabInstance: {fileID: 1106406672}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1106406674 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f87b7c951048eeb49bd3fd584876ac17, type: 3}
+  m_PrefabInstance: {fileID: 1106406672}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1106406675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1106406674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e04d84be44f55bd41b2a75b37ac7f0ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  partId: RM-P-015
+  displayName: Perfil T-Slot
+  description: "Estrutura em perfil de alum\xEDnio T-Slot para suporte dos bicos
+    e componentes."
+  quantity: 1
+  category: estrutura
+  animationLabel: 
 --- !u!1001 &1108197126
 PrefabInstance:
   m_ObjectHideFlags: 0
