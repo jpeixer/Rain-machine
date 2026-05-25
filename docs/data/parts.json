@@ -57,6 +57,14 @@
       "description": "Conjunto de válvulas para controle de fluxo de água.",
       "quantity": 4,
       "category": "fluidos"
+    },
+    {
+      "partId": "RM-P-013",
+      "nodeName": "nozzle",
+      "displayName": "Bicos de jato",
+      "description": "Bicos spray para distribuição do jato de água.",
+      "quantity": 5,
+      "category": "fluidos"
     }
   ],
   "animations": [

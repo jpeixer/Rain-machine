@@ -3,24 +3,21 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { BomPanel } from './bom-panel.js';
 import { AnimationController } from './animations.js';
+import { WaterJetSystem } from './water-jet.js';
 
 const PARTS_URL = './data/parts.json';
 const CONFIG_URL = './data/viewer-config.json';
 
-/** @type {Map<string, object>} */
 let partsByNode = new Map();
-/** @type {Array<{ clipName: string, label: string }>} */
 let animationDefs = [];
-/** @type {object | null} */
 let viewerConfig = null;
-/** @type {THREE.Object3D | null} */
 let modelRoot = null;
-/** @type {THREE.MeshStandardMaterial[]} */
 const highlightRestore = [];
-/** @type {THREE.Object3D | null} */
 let highlightedObject = null;
+let systemOn = false;
+let jetIntensity = 0.5;
 
-const canvas = /** @type {HTMLCanvasElement} */ (document.getElementById('viewer-canvas'));
+const canvas = document.getElementById('viewer-canvas');
 const loadingEl = document.getElementById('loading');
 const errorBanner = document.getElementById('error-banner');
 
@@ -33,11 +30,11 @@ const bomPanel = new BomPanel({
   id: document.getElementById('bom-id'),
   description: document.getElementById('bom-description'),
   quantity: document.getElementById('bom-quantity'),
+  actions: document.getElementById('bom-actions'),
 });
 
 const animController = new AnimationController(
-  null,
-  [],
+  null, [],
   document.getElementById('anim-buttons'),
   document.getElementById('anim-pause'),
   document.getElementById('anim-reset'),
@@ -60,6 +57,30 @@ controls.minDistance = 0.8;
 controls.maxDistance = 12;
 controls.target.set(0, 0.6, 0);
 controls.enablePan = false;
+
+const waterJets = new WaterJetSystem(scene);
+
+bomPanel.onAction((action, data) => {
+  if (action === 'toggle-power') {
+    systemOn = data.on;
+    if (systemOn) {
+      waterJets.turnOn();
+      waterJets.setIntensity(jetIntensity);
+    } else {
+      waterJets.turnOff();
+    }
+  }
+  if (action === 'intensity-up') {
+    jetIntensity = Math.min(1.0, jetIntensity + 0.1);
+    waterJets.setIntensity(jetIntensity);
+    data.label.textContent = `Intensidade: ${Math.round(jetIntensity * 100)}%`;
+  }
+  if (action === 'intensity-down') {
+    jetIntensity = Math.max(0.1, jetIntensity - 0.1);
+    waterJets.setIntensity(jetIntensity);
+    data.label.textContent = `Intensidade: ${Math.round(jetIntensity * 100)}%`;
+  }
+});
 
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
@@ -129,33 +150,11 @@ function fitCameraToObject(object) {
 function buildFallbackDemo() {
   const root = new THREE.Group();
   root.name = 'RainMachine';
-
   const matBase = new THREE.MeshStandardMaterial({ color: 0x4a5568, metalness: 0.3, roughness: 0.7 });
-  const matPump = new THREE.MeshStandardMaterial({ color: 0x2b6cb0, metalness: 0.5, roughness: 0.4 });
-  const matNozzle = new THREE.MeshStandardMaterial({ color: 0x38a169, metalness: 0.6, roughness: 0.35 });
-  const matPanel = new THREE.MeshStandardMaterial({ color: 0x805ad5, metalness: 0.2, roughness: 0.6 });
-
   const base = new THREE.Mesh(new THREE.BoxGeometry(2, 0.15, 1.2), matBase);
   base.name = 'BasePlate';
   base.position.y = 0.075;
   root.add(base);
-
-  const pump = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.3, 0.5, 16), matPump);
-  pump.name = 'PumpBody';
-  pump.position.set(0, 0.4, 0);
-  root.add(pump);
-
-  const nozzle = new THREE.Mesh(new THREE.ConeGeometry(0.12, 0.35, 12), matNozzle);
-  nozzle.name = 'Nozzle_A';
-  nozzle.rotation.x = Math.PI;
-  nozzle.position.set(0.6, 0.55, 0);
-  root.add(nozzle);
-
-  const panel = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.35, 0.08), matPanel);
-  panel.name = 'ControlPanel';
-  panel.position.set(-0.7, 0.5, 0.35);
-  root.add(panel);
-
   return root;
 }
 
@@ -173,11 +172,8 @@ function setModel(root, gltfAnimations = []) {
   fitCameraToObject(modelRoot);
   animController.root = modelRoot;
   animController.defs = animationDefs;
-  if (gltfAnimations.length > 0) {
-    animController.init(gltfAnimations);
-  } else {
-    animController.init([]);
-  }
+  animController.init(gltfAnimations);
+  waterJets.attachToNozzles(modelRoot);
 }
 
 function clearHighlight() {
@@ -273,6 +269,7 @@ function animate() {
   requestAnimationFrame(animate);
   controls.update();
   animController.update();
+  waterJets.update();
   renderer.render(scene, camera);
 }
 

@@ -290,6 +290,61 @@ html, body {
   display: none;
 }
 
+/* BOM action buttons */
+.bom-actions {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.bom-action-btn {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 20px;
+  border: none;
+  border-radius: 22px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.bom-action-btn:active {
+  transform: scale(0.96);
+}
+
+.bom-action-btn--toggle.active {
+  background: var(--danger);
+}
+
+.bom-action-btn--sm {
+  min-width: 44px;
+  padding: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.bom-action-intensity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.bom-action-label {
+  flex: 1;
+  font-size: 0.85rem;
+  color: var(--text);
+  text-align: center;
+}
+
 @media (min-width: 768px) {
   .top-bar h1 { font-size: 1.25rem; }
   .bom-sheet {
