@@ -35,10 +35,10 @@
       "category": "fluidos"
     },
     {
-      "partId": "RM-P-005",
-      "nodeName": "WaterTank",
-      "displayName": "Tanque de água",
-      "description": "Reservatório principal de armazenamento de água do sistema.",
+      "partId": "RM-P-006",
+      "nodeName": "TanqueIBC",
+      "displayName": "Tanque IBC",
+      "description": "Tanque IBC com plástico translúcido que permite visualizar o nível de água pela sombra.",
       "quantity": 1,
       "category": "fluidos"
     }
