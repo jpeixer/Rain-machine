@@ -81,7 +81,7 @@ export class BomPanel {
       this.actions.appendChild(btn);
     }
 
-    if (nodeName === 'painel') {
+    if (nodeName === 'painel' || nodeName === 'porta') {
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'bom-action-btn bom-action-btn--toggle';

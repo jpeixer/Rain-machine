@@ -18,12 +18,7 @@ let systemOn = false;
 let jetIntensity = 0.5;
 
 let doorObj = null;
-let doorPivot = null;
 let doorOpen = false;
-let doorAngle = 0;
-let doorTargetAngle = 0;
-const DOOR_OPEN_ANGLE = THREE.MathUtils.degToRad(100);
-const DOOR_SPEED = 2.5;
 
 const canvas = document.getElementById('viewer-canvas');
 const loadingEl = document.getElementById('loading');
@@ -184,54 +179,16 @@ function loadGlb(url) {
   });
 }
 
-function setupDoorPivot(root) {
+function setupDoor(root) {
   const porta = root.getObjectByName('porta');
   if (!porta) return;
-
   doorObj = porta;
-  const box = new THREE.Box3().setFromObject(porta);
-  const size = box.getSize(new THREE.Vector3());
-
-  const hingeWorld = new THREE.Vector3();
-  porta.getWorldPosition(hingeWorld);
-  hingeWorld.x += size.x * 0.5;
-
-  doorPivot = new THREE.Group();
-  doorPivot.name = '__doorPivot';
-  doorPivot.position.copy(hingeWorld);
-
-  const parent = porta.parent;
-  parent.add(doorPivot);
-
-  const localPos = porta.position.clone();
-  doorPivot.attach(porta);
-  porta.position.set(
-    localPos.x - hingeWorld.x,
-    localPos.y - hingeWorld.y,
-    localPos.z - hingeWorld.z,
-  );
-
-  doorAngle = 0;
-  doorTargetAngle = 0;
 }
 
 function toggleDoor() {
-  if (!doorPivot) return;
+  if (!doorObj) return;
   doorOpen = !doorOpen;
-  doorTargetAngle = doorOpen ? DOOR_OPEN_ANGLE : 0;
-}
-
-function updateDoor(dt) {
-  if (!doorPivot) return;
-  if (Math.abs(doorAngle - doorTargetAngle) < 0.001) return;
-
-  const dir = doorTargetAngle > doorAngle ? 1 : -1;
-  doorAngle += dir * DOOR_SPEED * dt;
-
-  if (dir > 0 && doorAngle > doorTargetAngle) doorAngle = doorTargetAngle;
-  if (dir < 0 && doorAngle < doorTargetAngle) doorAngle = doorTargetAngle;
-
-  doorPivot.rotation.y = doorAngle;
+  doorObj.visible = !doorOpen;
 }
 
 function setModel(root, gltfAnimations = []) {
@@ -243,7 +200,7 @@ function setModel(root, gltfAnimations = []) {
   animController.defs = animationDefs;
   animController.init(gltfAnimations);
   waterJets.attachToNozzles(modelRoot);
-  setupDoorPivot(modelRoot);
+  setupDoor(modelRoot);
 }
 
 function clearHighlight() {
@@ -335,15 +292,11 @@ function resize() {
   renderer.setSize(w, h, false);
 }
 
-const clock = new THREE.Clock();
-
 function animate() {
   requestAnimationFrame(animate);
-  const dt = clock.getDelta();
   controls.update();
   animController.update();
   waterJets.update();
-  updateDoor(dt);
   renderer.render(scene, camera);
 }
 
