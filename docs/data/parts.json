@@ -5,100 +5,100 @@
     {
       "partId": "RM-P-009",
       "nodeName": "porta",
-      "displayName": "Panel Door",
-      "description": "Access door to the electrical panel.",
+      "displayName": "Porta do painel",
+      "description": "Porta de acesso ao painel elétrico.",
       "quantity": 1,
-      "category": "structure"
+      "category": "estrutura"
     },
     {
       "partId": "RM-P-015",
       "nodeName": "tslot",
-      "displayName": "T-Slot Profile",
-      "description": "Aluminum T-Slot structural frame for nozzle and component support.",
+      "displayName": "Perfil T-Slot",
+      "description": "Estrutura em perfil de alumínio T-Slot para suporte dos bicos e componentes.",
       "quantity": 1,
-      "category": "structure"
+      "category": "estrutura"
     },
     {
       "partId": "RM-P-010",
       "nodeName": "Water Pump",
-      "displayName": "Water Pump",
-      "description": "Centrifugal pump for system pressurization.",
+      "displayName": "Bomba d'água",
+      "description": "Bomba centrífuga para pressurização do sistema.",
       "quantity": 1,
-      "category": "fluids"
+      "category": "fluidos"
     },
     {
       "partId": "RM-P-011",
       "nodeName": "ligadesliga",
-      "displayName": "On/Off Switch",
-      "description": "Main power switch for the system.",
+      "displayName": "Botão Liga/Desliga",
+      "description": "Botão de acionamento principal do sistema.",
       "quantity": 1,
-      "category": "electrical"
+      "category": "elétrica"
     },
     {
       "partId": "RM-P-006",
       "nodeName": "TanqueIBC",
-      "displayName": "IBC Tank",
-      "description": "IBC tank with translucent plastic that allows viewing the water level by shadow.",
+      "displayName": "Tanque IBC",
+      "description": "Tanque IBC com plástico translúcido que permite visualizar o nível de água pela sombra.",
       "quantity": 1,
-      "category": "fluids"
+      "category": "fluidos"
     },
     {
       "partId": "RM-P-012",
       "nodeName": "disjuntor",
-      "displayName": "Circuit Breaker",
-      "description": "Electrical circuit protection breaker.",
+      "displayName": "Disjuntor",
+      "description": "Disjuntor de proteção elétrica do circuito.",
       "quantity": 1,
-      "category": "electrical"
+      "category": "elétrica"
     },
     {
       "partId": "RM-P-008",
       "nodeName": "painel",
-      "displayName": "Electrical Panel",
-      "description": "Electrical control panel for the system.",
+      "displayName": "Painel elétrico",
+      "description": "Painel de controle elétrico do sistema.",
       "quantity": 1,
-      "category": "electrical"
+      "category": "elétrica"
     },
     {
       "partId": "RM-P-014",
       "nodeName": "controle",
-      "displayName": "Valve Controller",
-      "description": "Controller for adjusting the water jet intensity.",
+      "displayName": "Controle de válvulas",
+      "description": "Controle para regulagem da intensidade do jato de água nas válvulas.",
       "quantity": 1,
-      "category": "control"
+      "category": "controle"
     },
     {
       "partId": "RM-P-007",
       "nodeName": "valvulas",
-      "displayName": "Valves",
-      "description": "Set of valves for water flow control.",
+      "displayName": "Válvulas",
+      "description": "Conjunto de válvulas para controle de fluxo de água.",
       "quantity": 4,
-      "category": "fluids"
+      "category": "fluidos"
     },
     {
       "partId": "RM-P-013",
       "nodeName": "nozzle",
-      "displayName": "Spray Nozzles",
-      "description": "Spray nozzles for water jet distribution.",
+      "displayName": "Bicos de jato",
+      "description": "Bicos spray para distribuição do jato de água.",
       "quantity": 5,
-      "category": "fluids"
+      "category": "fluidos"
     },
     {
       "partId": "RM-P-016",
       "nodeName": "Plane",
-      "displayName": "Base Plane",
-      "description": "Structural support plane.",
+      "displayName": "Plano base",
+      "description": "Plano de apoio da estrutura.",
       "quantity": 1,
-      "category": "structure"
+      "category": "estrutura"
     }
   ],
   "animations": [
     {
       "clipName": "OpenValve",
-      "label": "Open Valve"
+      "label": "Abrir válvula"
     },
     {
       "clipName": "CycleRain",
-      "label": "Rain Cycle"
+      "label": "Ciclo chuva"
     }
   ]
 }
