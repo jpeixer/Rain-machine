@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { BomPanel } from './bom-panel.js';
 import { AnimationController } from './animations.js';
 import { WaterJetSystem } from './water-jet.js';
@@ -48,11 +47,9 @@ const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true 
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 0.8;
+renderer.toneMappingExposure = 1;
 
 const scene = new THREE.Scene();
-const pmremGenerator = new THREE.PMREMGenerator(renderer);
-pmremGenerator.compileEquirectangularShader();
 
 const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
 camera.position.set(2.5, 2, 3.5);
@@ -133,7 +130,7 @@ function indexParts(partsData) {
 
 function applyConfig(config) {
   viewerConfig = config;
-  scene.background = new THREE.Color(config.backgroundColor || '#1a1a2e');
+  scene.background = new THREE.Color(config.backgroundColor || '#0f1419');
   if (config.camera) {
     camera.fov = config.camera.fov ?? 45;
     controls.minDistance = config.camera.minDistance ?? 0.8;
@@ -308,40 +305,6 @@ function animate() {
   renderer.render(scene, camera);
 }
 
-function createNoiseBackground() {
-  const size = 512;
-  const canvas2d = document.createElement('canvas');
-  canvas2d.width = size;
-  canvas2d.height = size;
-  const ctx = canvas2d.getContext('2d');
-
-  ctx.fillStyle = '#0a0a0f';
-  ctx.fillRect(0, 0, size, size);
-
-  const imageData = ctx.getImageData(0, 0, size, size);
-  const data = imageData.data;
-  for (let i = 0; i < data.length; i += 4) {
-    const noise = (Math.random() - 0.5) * 18;
-    data[i] = Math.max(0, Math.min(255, data[i] + noise));
-    data[i + 1] = Math.max(0, Math.min(255, data[i + 1] + noise));
-    data[i + 2] = Math.max(0, Math.min(255, data[i + 2] + noise + 3));
-    data[i + 3] = 255;
-  }
-  ctx.putImageData(imageData, 0, 0);
-
-  const tex = new THREE.CanvasTexture(canvas2d);
-  tex.mapping = THREE.EquirectangularReflectionMapping;
-  return tex;
-}
-
-function setupRoomEnvironment() {
-  const roomEnv = new RoomEnvironment(renderer);
-  const envMap = pmremGenerator.fromScene(roomEnv).texture;
-  scene.environment = envMap;
-  scene.background = createNoiseBackground();
-  roomEnv.dispose();
-  pmremGenerator.dispose();
-}
 
 async function init() {
   resize();
@@ -355,7 +318,6 @@ async function init() {
     indexParts(partsData);
     applyConfig(config);
 
-    setupRoomEnvironment();
 
     const modelPath = config.modelPath || './assets/machine.glb';
     try {
