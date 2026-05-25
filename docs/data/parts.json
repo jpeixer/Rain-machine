@@ -33,6 +33,14 @@
       "description": "Bico direcionável para distribuição do fluxo.",
       "quantity": 2,
       "category": "fluidos"
+    },
+    {
+      "partId": "RM-P-005",
+      "nodeName": "WaterTank",
+      "displayName": "Tanque de água",
+      "description": "Reservatório principal de armazenamento de água do sistema.",
+      "quantity": 1,
+      "category": "fluidos"
     }
   ],
   "animations": [
