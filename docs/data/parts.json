@@ -81,6 +81,14 @@
       "description": "Bicos spray para distribuição do jato de água.",
       "quantity": 5,
       "category": "fluidos"
+    },
+    {
+      "partId": "RM-P-016",
+      "nodeName": "Plane",
+      "displayName": "Plano base",
+      "description": "Plano de apoio da estrutura.",
+      "quantity": 1,
+      "category": "estrutura"
     }
   ],
   "animations": [

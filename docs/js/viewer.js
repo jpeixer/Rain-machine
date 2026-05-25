@@ -74,6 +74,8 @@ bomPanel.onAction((action, data) => {
     } else {
       waterJets.turnOff();
     }
+    bomPanel.close();
+    clearHighlight();
   }
   if (action === 'intensity-up') {
     jetIntensity = Math.min(1.0, jetIntensity + 0.1);
@@ -89,6 +91,8 @@ bomPanel.onAction((action, data) => {
   }
   if (action === 'toggle-door') {
     toggleDoor();
+    bomPanel.close();
+    clearHighlight();
   }
 });
 
