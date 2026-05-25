@@ -308,11 +308,28 @@ function animate() {
   renderer.render(scene, camera);
 }
 
+function createGradientTexture() {
+  const canvas2d = document.createElement('canvas');
+  canvas2d.width = 2;
+  canvas2d.height = 512;
+  const ctx = canvas2d.getContext('2d');
+  const gradient = ctx.createLinearGradient(0, 0, 0, 512);
+  gradient.addColorStop(0, '#1a1a2e');
+  gradient.addColorStop(0.4, '#16213e');
+  gradient.addColorStop(0.7, '#0f3460');
+  gradient.addColorStop(1, '#1a1a2e');
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, 2, 512);
+  const tex = new THREE.CanvasTexture(canvas2d);
+  tex.mapping = THREE.EquirectangularReflectionMapping;
+  return tex;
+}
+
 function setupRoomEnvironment() {
   const roomEnv = new RoomEnvironment(renderer);
   const envMap = pmremGenerator.fromScene(roomEnv).texture;
   scene.environment = envMap;
-  scene.background = new THREE.Color('#2a2a2a');
+  scene.background = createGradientTexture();
   roomEnv.dispose();
   pmremGenerator.dispose();
 }
