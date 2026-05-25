@@ -1,0 +1,20 @@
+{
+    "name": "RainMachine.Viewer.Editor",
+    "rootNamespace": "",
+    "references": [
+        "RainMachine.Viewer",
+        "glTFast",
+        "glTFast.Export"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
