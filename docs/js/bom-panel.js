@@ -68,14 +68,14 @@ export class BomPanel {
       btn.dataset.action = 'toggle-power';
       if (this._powerOn) {
         btn.classList.add('active');
-        btn.textContent = 'Desligar';
+        btn.textContent = 'Turn Off';
       } else {
-        btn.textContent = 'Ligar';
+        btn.textContent = 'Turn On';
       }
       btn.addEventListener('click', () => {
         this._powerOn = !this._powerOn;
         btn.classList.toggle('active', this._powerOn);
-        btn.textContent = this._powerOn ? 'Desligar' : 'Ligar';
+        btn.textContent = this._powerOn ? 'Turn Off' : 'Turn On';
         if (this._onAction) this._onAction('toggle-power', { on: this._powerOn });
       });
       this.actions.appendChild(btn);
@@ -86,12 +86,12 @@ export class BomPanel {
       btn.type = 'button';
       btn.className = 'bom-action-btn bom-action-btn--toggle';
       btn.dataset.action = 'toggle-door';
-      btn.textContent = this._doorOpen ? 'Fechar porta' : 'Abrir porta';
+      btn.textContent = this._doorOpen ? 'Close Door' : 'Open Door';
       if (this._doorOpen) btn.classList.add('active');
       btn.addEventListener('click', () => {
         this._doorOpen = !this._doorOpen;
         btn.classList.toggle('active', this._doorOpen);
-        btn.textContent = this._doorOpen ? 'Fechar porta' : 'Abrir porta';
+        btn.textContent = this._doorOpen ? 'Close Door' : 'Open Door';
         if (this._onAction) this._onAction('toggle-door', { open: this._doorOpen });
       });
       this.actions.appendChild(btn);
@@ -103,7 +103,7 @@ export class BomPanel {
 
       const label = document.createElement('span');
       label.className = 'bom-action-label';
-      label.textContent = `Intensidade: ${Math.round(this._intensity * 100)}%`;
+      label.textContent = `Intensity: ${Math.round(this._intensity * 100)}%`;
 
       const minus = document.createElement('button');
       minus.type = 'button';
@@ -125,14 +125,6 @@ export class BomPanel {
       wrap.appendChild(label);
       wrap.appendChild(plus);
       this.actions.appendChild(wrap);
-    }
-  }
-
-  updatePowerState(isOn) {
-    const btn = this.actions.querySelector('[data-action="toggle-power"]');
-    if (btn) {
-      btn.classList.toggle('active', isOn);
-      btn.textContent = isOn ? 'Desligar' : 'Ligar';
     }
   }
 

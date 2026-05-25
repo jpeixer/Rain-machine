@@ -81,13 +81,13 @@ bomPanel.onAction((action, data) => {
     jetIntensity = Math.min(1.0, jetIntensity + 0.1);
     waterJets.setIntensity(jetIntensity);
     bomPanel.setIntensityState(jetIntensity);
-    data.label.textContent = `Intensidade: ${Math.round(jetIntensity * 100)}%`;
+    data.label.textContent = `Intensity: ${Math.round(jetIntensity * 100)}%`;
   }
   if (action === 'intensity-down') {
     jetIntensity = Math.max(0.1, jetIntensity - 0.1);
     waterJets.setIntensity(jetIntensity);
     bomPanel.setIntensityState(jetIntensity);
-    data.label.textContent = `Intensidade: ${Math.round(jetIntensity * 100)}%`;
+    data.label.textContent = `Intensity: ${Math.round(jetIntensity * 100)}%`;
   }
   if (action === 'toggle-door') {
     toggleDoor();
@@ -106,7 +106,7 @@ let pointerDown = { x: 0, y: 0, time: 0 };
 
 async function loadJson(url) {
   const res = await fetch(url);
-  if (!res.ok) throw new Error(`Falha ao carregar ${url}`);
+  if (!res.ok) throw new Error(`Failed to load ${url}`);
   return res.json();
 }
 
@@ -321,17 +321,17 @@ async function init() {
       const gltf = await loadGlb(modelPath);
       setModel(gltf.scene, gltf.animations || []);
     } catch (glbErr) {
-      console.warn('GLB não encontrado, usando demo:', glbErr);
+      console.warn('GLB not found, using demo:', glbErr);
       if (config.fallbackDemo !== false) {
         setModel(buildFallbackDemo(), []);
-        showError('Modelo GLB ainda não exportado — exibindo pré-visualização demo.');
+        showError('GLB model not yet exported — showing demo preview.');
       } else {
         throw glbErr;
       }
     }
   } catch (err) {
     console.error(err);
-    showError('Erro ao carregar o viewer. Verifique a conexão.');
+    showError('Failed to load viewer. Check your connection.');
     setModel(buildFallbackDemo(), []);
   } finally {
     hideLoading();
