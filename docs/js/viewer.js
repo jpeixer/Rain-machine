@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { EXRLoader } from 'three/addons/loaders/EXRLoader.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { BomPanel } from './bom-panel.js';
 import { AnimationController } from './animations.js';
 import { WaterJetSystem } from './water-jet.js';
@@ -308,18 +308,13 @@ function animate() {
   renderer.render(scene, camera);
 }
 
-function loadEnvironment(url) {
-  return new Promise((resolve, reject) => {
-    new EXRLoader().load(url, (texture) => {
-      texture.mapping = THREE.EquirectangularReflectionMapping;
-      const envMap = pmremGenerator.fromEquirectangular(texture).texture;
-      scene.environment = envMap;
-      scene.background = envMap;
-      texture.dispose();
-      pmremGenerator.dispose();
-      resolve(envMap);
-    }, undefined, reject);
-  });
+function setupRoomEnvironment() {
+  const roomEnv = new RoomEnvironment(renderer);
+  const envMap = pmremGenerator.fromScene(roomEnv).texture;
+  scene.environment = envMap;
+  scene.background = new THREE.Color('#2a2a2a');
+  roomEnv.dispose();
+  pmremGenerator.dispose();
 }
 
 async function init() {
@@ -334,9 +329,7 @@ async function init() {
     indexParts(partsData);
     applyConfig(config);
 
-    loadEnvironment('./assets/environment.exr').catch((err) => {
-      console.warn('HDRI not loaded, using solid background:', err);
-    });
+    setupRoomEnvironment();
 
     const modelPath = config.modelPath || './assets/machine.glb';
     try {
