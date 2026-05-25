@@ -185,7 +185,7 @@ function loadGlb(url) {
 }
 
 function setupDoorPivot(root) {
-  const porta = root.getObjectByName('porta (1)');
+  const porta = root.getObjectByName('porta');
   if (!porta) return;
 
   doorObj = porta;

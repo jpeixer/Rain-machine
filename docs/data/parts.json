@@ -4,7 +4,7 @@
   "parts": [
     {
       "partId": "RM-P-009",
-      "nodeName": "porta (1)",
+      "nodeName": "porta",
       "displayName": "Porta do painel",
       "description": "Porta de acesso ao painel elétrico.",
       "quantity": 1,
